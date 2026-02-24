@@ -1,1 +1,22 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import 'flowbite/src/themes/default';
+
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
+
+@import 'tailwindcss';
+
+@theme {
+  --color-main: #00298d;
+  --color-secondary: #f0f2f5;
+}
+
+@utility container {
+  @apply mx-auto;
+}
+
+body {
+  background-color: var(--color-secondary);
+  font-family: 'Cairo', sans-serif;
+}
