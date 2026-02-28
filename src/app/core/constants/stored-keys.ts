@@ -1,1 +1,3 @@
-export const Stored_Keys = {};
+export const Stored_Keys = {
+  userData: 'userData',
+};

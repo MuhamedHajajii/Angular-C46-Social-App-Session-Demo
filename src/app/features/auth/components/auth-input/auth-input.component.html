@@ -1,0 +1,115 @@
+<div class="my-3">
+  <label for="fullName" class="block mb-2.5 text-sm font-medium text-heading sr-only">{{
+    label
+  }}</label>
+  <div class="relative">
+    <div class="absolute inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none">
+      <i class="text-gray-400 far fa-user-alt"></i>
+    </div>
+
+    @if (inputType === 'select') {
+      <div class="my-3">
+        <label for="userGender" class="block mb-2.5 text-sm font-medium text-heading sr-only">{{
+          label
+        }}</label>
+        <div class="relative">
+          <div class="absolute inset-y-0 inset-s-0 flex items-center ps-3 pointer-events-none">
+            <i class="text-gray-400 fas fa-user-group"></i>
+          </div>
+          <select
+            #selectInput
+            (change)="onChange(selectInput.value)"
+            [disabled]="isDisabled"
+            [value]="value"
+            id="gender"
+            class="block w-full p-3 ps-9 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+          >
+            <option selected disabled value="">Gender</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+        </div>
+      </div>
+    } @else {
+      <input
+        #userInput
+        [value]="value"
+        (blur)="onBlur()"
+        (input)="onChange($event.target.value)"
+        [type]="inputType"
+        id="fullName"
+        class="block w-full p-3 ps-9 bg-neutral-secondary-medium border text-heading text-sm rounded-base shadow-xs placeholder:text-body"
+        placeholder="Full Name"
+        [class.border-green-500]="
+          (!control?.getError('required') ||
+            !control?.getError('minlength') ||
+            !control?.getError('maxlength')) &&
+          control?.touched
+        "
+        [class.border-red-500]="
+          (control?.getError('required') ||
+            control?.getError('minlength') ||
+            control?.getError('maxlength')) &&
+          control?.touched
+        "
+      />
+      @if (inputType === 'password') {
+        @if (userInput.type === 'password') {
+          <i
+            (click)="userInput.type = 'text'"
+            class="fas fa-eye absolute top-1/2 right-0 cursor-pointer -translate-1/2"
+          ></i>
+        } @else {
+          <i
+            (click)="userInput.type = 'password'"
+            class="fas fa-eye-slash absolute top-1/2 right-0 cursor-pointer -translate-1/2"
+          ></i>
+        }
+      }
+    }
+  </div>
+</div>
+
+@if (control?.touched) {
+  @if (control?.getError('required')) {
+    <div
+      animate.enter="fadeIn"
+      animate.out="fadeOut"
+      class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-2"
+      role="alert"
+    >
+      <p class="font-bold">Required</p>
+    </div>
+  }
+
+  @if (control?.getError('minlength')) {
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-2" role="alert">
+      <p class="font-bold">Minimum characters (3) 🍟</p>
+    </div>
+  }
+  @if (control?.getError('maxlength')) {
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-2" role="alert">
+      <p class="font-bold">maximum characters (20) 😭</p>
+    </div>
+  }
+  @if (control?.getError('email')) {
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-2" role="alert">
+      <p class="font-bold">email not valid</p>
+    </div>
+  }
+  @if (control?.getError('pattern')) {
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-2" role="alert">
+      <p class="font-bold">Password not valid</p>
+    </div>
+  }
+  @if (control?.getError('pattern')) {
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-2" role="alert">
+      <p class="font-bold">Password not valid</p>
+    </div>
+  }
+  @if (formGroup?.getError('missMatch')) {
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 my-2" role="alert">
+      <p class="font-bold">Password not equal RePassword</p>
+    </div>
+  }
+}

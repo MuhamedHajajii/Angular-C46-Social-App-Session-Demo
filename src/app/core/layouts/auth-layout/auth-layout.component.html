@@ -1,9 +1,20 @@
-<p>auth-layout works!</p>
-<p>auth-layout works!</p>
-<p>auth-layout works!</p>
-<p>auth-layout works!</p>
-<p>auth-layout works!</p>
-
-<h1>😭😭😭😭❤️❤️❤️❤️❤️</h1>
-
-<router-outlet />
+<section class="min-h-screen flex justify-center items-center">
+  <div class="bg-white container max-w-xl rounded-2xl p-8 text-center">
+    <!-- auth header -->
+    <div class="bg-gray-200 p-1 rounded-md flex justify-between items-center">
+      <a
+        class="bg-gray-200 font-bold w-full text-main rounded-md py-2"
+        routerLink="/login"
+        routerLinkActive="bg-white"
+        >Login</a
+      >
+      <a
+        class="bg-gray-200 font-bold w-full text-main rounded-md py-2"
+        routerLink="/register"
+        routerLinkActive="bg-white"
+        >Register</a
+      >
+    </div>
+    <router-outlet />
+  </div>
+</section>

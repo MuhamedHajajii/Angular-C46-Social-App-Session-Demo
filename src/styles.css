@@ -20,3 +20,7 @@ body {
   background-color: var(--color-secondary);
   font-family: 'Cairo', sans-serif;
 }
+
+input:focus {
+  box-shadow: transparent !important;
+}
