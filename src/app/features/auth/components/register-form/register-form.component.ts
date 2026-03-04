@@ -80,8 +80,8 @@ export class RegisterFormComponent {
     console.log(response);
     this.isLoading = false;
     this.successMessage = response.message;
-    this.router.navigate(['/login']);
     localStorage.setItem(Stored_Keys.userData, JSON.stringify(response.data.user));
+    this.router.navigate(['/login']);
   }
 
   handleRegisterFailedResponse(error: HttpErrorResponse): void {

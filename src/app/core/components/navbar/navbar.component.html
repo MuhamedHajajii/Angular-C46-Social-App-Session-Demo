@@ -1,1 +1,66 @@
-<p>navbar works!</p>
+<nav class="px-10 py-2 bg-white flex justify-between items-center">
+  <div>
+    <a class="flex items-center gap-2" routerLink="/">
+      <img class="w-9 h-9 rounded-sm" src="/images/route.png" alt="" />
+      <span class="text-2xl text-black font-extrabold">Route Posts</span>
+    </a>
+  </div>
+  <div>
+    <ul
+      class="flex items-center gap-4 rounded-full bg-secondary border justify-center p-2 border-gray-200 px-5 text-sm"
+    >
+      <li>
+        <a routerLink="/feed" class="rounded-md px-3" routerLinkActive="text-main bg-white">
+          <i class="far fa-home"></i>
+          Feed</a
+        >
+      </li>
+      <li>
+        <a routerLink="/user-profile" class="rounded-md px-3" routerLinkActive="text-main bg-white">
+          <i class="far fa-user"></i>
+          Profile</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="/notifications"
+          class="rounded-md px-3"
+          routerLinkActive="text-main bg-white"
+        >
+          <i class="far fa-message"></i>
+          Notifications</a
+        >
+      </li>
+    </ul>
+  </div>
+  <div>
+    <div
+      id="dropdownDefaultButton"
+      data-dropdown-toggle="mainMenu"
+      class="rounded-full cursor-pointer bg-secondary border flex justify-center items-center p-2 border-gray-200 gap-2"
+    >
+      @if (userData) {
+        <img class="size-9 rounded-full" [src]="userData.photo" [alt]="userData.name" />
+        <h2>{{ userData.name }}</h2>
+      }
+      <i class="fas fa-bars"></i>
+    </div>
+  </div>
+</nav>
+
+<!-- Dropdown menu -->
+<div
+  id="mainMenu"
+  class="z-10 hidden bg-neutral-primary-medium border border-default-medium rounded-base shadow-lg w-44"
+>
+  <ul class="p-2 text-sm text-body font-medium" aria-labelledby="dropdownDefaultButton">
+    <li>
+      <button
+        (click)="logOut()"
+        class="inline-flex cursor-pointer items-center w-full p-2 hover:bg-neutral-tertiary-medium hover:text-heading rounded"
+      >
+        Sign out
+      </button>
+    </li>
+  </ul>
+</div>

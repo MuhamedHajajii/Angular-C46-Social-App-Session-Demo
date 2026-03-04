@@ -1,10 +1,16 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Stored_Keys } from '../../../../core/constants/stored-keys';
-import { IAuthResponse } from '../../interfaces/IAuthResponse';
+import { IAuthResponse, User } from '../../interfaces/IAuthResponse';
 import { AuthInputComponent } from '../auth-input/auth-input.component';
 
 @Component({
@@ -17,16 +23,25 @@ export class LoginFormComponent {
   // injected serves
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly fb = inject(FormBuilder);
 
   isLoading = false;
   errorMessage = '';
   successMessage = '';
 
-  loginForm = new FormGroup({
-    email: new FormControl('', [Validators.required]),
+  userData!: User;
 
-    password: new FormControl('', [Validators.required]),
+  loginForm = this.fb.group({
+    email: ['', [Validators.required]],
+    password: ['', [Validators.required]],
   });
+
+  constructor() {
+    const userData = JSON.parse(localStorage.getItem(Stored_Keys.userData)!);
+    if (userData) {
+      this.loginForm.get('email')?.setValue(userData.email);
+    }
+  }
 
   onLoginSubmit() {
     this.loginForm.markAllAsTouched();
@@ -53,8 +68,9 @@ export class LoginFormComponent {
     console.log(response);
     this.isLoading = false;
     this.successMessage = response.message;
-    this.router.navigate(['/feed']);
     localStorage.setItem(Stored_Keys.userData, JSON.stringify(response.data.user));
+    localStorage.setItem(Stored_Keys.token, JSON.stringify(response.data.token));
+    this.router.navigate(['/feed']);
   }
 
   handleRegisterFailedResponse(error: HttpErrorResponse): void {

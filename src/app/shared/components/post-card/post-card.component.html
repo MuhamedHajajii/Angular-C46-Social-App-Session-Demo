@@ -1,0 +1,129 @@
+<div class="bg-white rounded-2xl shadow p-2 mb-4">
+  <!-- Header -->
+  <div class="flex items-center justify-between mb-4">
+    <div class="flex items-center gap-3">
+      <img [src]="post.user.photo" class="w-10 h-10 rounded-full object-cover" />
+      <div>
+        <h3 class="font-semibold text-sm">
+          {{ post.user.name }}
+        </h3>
+
+        @if (post.user.username) {
+          <p class="text-xs text-gray-500">@{{ post.user.username }}</p>
+        }
+
+        <p class="text-xs text-gray-400">
+          {{ post.createdAt | date: 'short' }}
+        </p>
+      </div>
+    </div>
+
+    <!-- Bookmark -->
+    <button class="text-gray-400 hover:text-black">
+      <i class="fa-regular fa-bookmark"></i>
+    </button>
+  </div>
+
+  <!-- Post Body -->
+  @if (post.body) {
+    <p class="mb-4 text-gray-800 whitespace-pre-line">
+      {{ post.body }}
+    </p>
+  }
+
+  <!-- Post Image -->
+  @if (post.image) {
+    <img [src]="post.image" class="rounded-xl w-full max-h-125 object-cover mb-4" />
+  }
+
+  <!-- Shared Post -->
+  @if (post.sharedPost) {
+    <div class="border rounded-xl p-4 bg-gray-50 mb-4">
+      <div class="flex items-center gap-2 mb-2">
+        <img [src]="post.sharedPost.user.photo" class="w-8 h-8 rounded-full object-cover" />
+        <div>
+          <p class="text-sm font-medium">
+            {{ post.sharedPost.user.name }}
+          </p>
+          <p class="text-xs text-gray-500">@{{ post.sharedPost.user.username }}</p>
+        </div>
+      </div>
+
+      <p class="text-sm text-gray-700">
+        {{ post.sharedPost.body }}
+      </p>
+    </div>
+  }
+
+  <!-- counters -->
+  <div class="flex items-center justify-between p-4 text-sm text-gray-500">
+    <div>
+      <i class="fas fa-thumbs-up"></i>
+      0 Likes
+    </div>
+    <div class="flex items-center gap-3">
+      <div>
+        <i class="fas fa-retweet"></i>
+        0 Shares
+      </div>
+      <div>0 Comments</div>
+      <div>
+        <a class="text-main">View Details</a>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <!-- interactions -->
+  <div class="flex justify-around p-4 text-sm text-gray-500">
+    <div>
+      <i class="fas fa-thumbs-up"></i>
+      Like
+    </div>
+    <div>
+      <button (click)="getPostComments(post._id)" class="cursor-pointer" type="button">
+        <i class="fas fa-comment"></i>
+        @if (isCommentsLoading) {
+          Loading <i class="fas fa-spinner fa-spin"></i>
+        } @else {
+          Comment
+        }
+      </button>
+    </div>
+    <div>
+      <i class="fas fa-share-nodes"></i>
+      share
+    </div>
+  </div>
+
+  <!-- Top Comment Preview -->
+  @if (post.topComment && isShowTopComment) {
+    <div class="mt-4 bg-gray-50 rounded-lg p-3">
+      <div class="flex gap-2 items-center mb-1">
+        <img [src]="post.topComment.commentCreator.photo" class="w-6 h-6 rounded-full" />
+        <span class="text-xs font-medium">
+          {{ post.topComment.commentCreator.name }}
+        </span>
+      </div>
+      <p class="text-sm text-gray-600">
+        {{ post.topComment.content }}
+      </p>
+    </div>
+  }
+
+  @if (!isShowTopComment) {
+    @for (comment of allComments; track $index) {
+      <app-all-comments [comment]="comment" />
+    } @empty {
+      <div class="bg-white-100 border-l-4 border-white-500 text-white-700 p-4" role="alert">
+        <p class="font-bold">not comments added yet</p>
+      </div>
+    }
+
+    <div class="my-3">
+      <app-add-comment
+        (sendAddedCommentToParent)="allComments.unshift($event)"
+        [postID]="post._id"
+      />
+    </div>
+  }
+</div>

@@ -1,0 +1,48 @@
+<div
+  class="bg-white mb-2 flex rounded-2xl items-center gap-1 shadow-sm hover:-translate-y-1 hover:shadow-xl transition-all duration-300 p-5 text-center"
+>
+  <!-- Profile Image -->
+  <img
+    [src]="suggestion.photo"
+    [alt]="suggestion.name"
+    class="w-20 h-20 rounded-full object-cover mb-4 border-4 border-gray-100"
+  />
+
+  <div class="text-start grow">
+    <!-- Name -->
+    <h3 class="font-semibold text-md truncate w-full">
+      {{ suggestion.name }}
+    </h3>
+
+    <!-- Username -->
+    @if (suggestion.username) {
+      <p class="text-gray-500 text-sm mb-2 truncate w-full">@{{ suggestion.username }}</p>
+    }
+
+    <!-- Followers -->
+    <p class="text-sm text-gray-600">{{ suggestion.followersCount | number }} Followers</p>
+
+    <!-- Mutual Followers -->
+    @if (suggestion.mutualFollowersCount) {
+      <p class="text-xs text-gray-400 mt-1">{{ suggestion.mutualFollowersCount }} Mutual</p>
+    }
+
+    <!-- Follow Button -->
+    <button
+      [class.bg-green-300]="isFollowed"
+      [disabled]="isLoading"
+      (click)="followUser(suggestion._id)"
+      class="cursor-pointer disabled:bg-gray-400 bg-black mt-4 w-full py-1 text-sm text-white rounded-xl hover:opacity-90 transition"
+    >
+      @if (!isFollowed) {
+        @if (isLoading) {
+          updating... <i class="fas fa-spinner fa-spin"></i>
+        } @else {
+          Follow
+        }
+      } @else {
+        Followed
+      }
+    </button>
+  </div>
+</div>

@@ -1,1 +1,42 @@
-<p>feed-page works!</p>
+<div class="grid grid-cols-12 gap-5 p-5">
+  <div class="col-span-3">
+    <app-feed-side-bar />
+  </div>
+  <div class="col-span-6">
+    <app-add-posts (sendAddedPostToParent)="allPosts.unshift($event)" />
+    @if (allPosts) {
+      <app-all-posts [allPosts]="allPosts" />
+    } @else {
+      <div class="min-h-100 flex justify-center items-center">
+        <div
+          style="border-top-color: transparent"
+          class="w-16 h-16 border-4 border-blue-400 border-solid rounded-full animate-spin"
+        ></div>
+      </div>
+    }
+
+    <!-- loading more posts message -->
+    @if (allPosts && isLoading) {
+      <div class="bg-white text-center py-20 rounded-2xl my-4">
+        loading data <i class="fas fa-spinner fa-spin"></i>
+      </div>
+    }
+  </div>
+  <div class="col-span-3">
+    <div class="mx-auto">
+      @for (user of allFollowSuggestions; track user._id) {
+        <app-feed-suggested-friends (refreshView)="getFollowSuggestions()" [suggestion]="user" />
+      } @empty {
+        <div class="col-span-full text-center py-10 text-gray-500">No suggestions found.</div>
+      }
+    </div>
+  </div>
+</div>
+
+<div
+  class="search-results"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="onScroll()"
+></div>
